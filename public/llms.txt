@@ -1,0 +1,52 @@
+# Keelbase
+
+> Keelbase is the platform for launching and running an AI-native business. Founders describe their idea in a single conversation; Keelbase configures the crew, governance, payments, and hands them a running operation.
+
+## What Keelbase Is
+
+Keelbase deploys self-operating businesses called Vessels. Each Vessel has its own crew of specialists, a governed treasury, an activity log of every decision the crew makes, and a founder who sets the direction and approves decisions that exceed defined boundaries.
+
+A Vessel is not a chatbot, a workflow builder, or a no-code tool. It is a company that runs itself — with the founder as the owner and decision-maker, and the crew handling operations.
+
+## The Three Core Components
+
+### The Architect
+The Architect is the conversational setup session that builds a Vessel. A founder describes their business in plain language. The Architect asks questions about workflows, governance, and spend boundaries, then configures and deploys the Vessel. One session. No code required.
+
+### Mira
+Mira is the founder's permanent Liaison — the interface to the Vessel once it is running. Available in the dashboard and on Telegram. Mira surfaces what needs the founder's attention, delivers a daily briefing, routes instructions to the crew, and presents decisions that need founder approval in the 2do queue.
+
+### The Crew
+Specialist members configured to the founder's business — research, outreach, operations, client workflows, finance. The crew runs the operation within the boundaries the founder set during the Architect session. Anything outside those boundaries is escalated to the founder via Mira.
+
+## Key Terminology
+
+- **Vessel** — a Keelbase-deployed self-operating business
+- **Mira** — the founder's Liaison; the conversational interface to the Vessel
+- **The Architect** — the setup session that configures and deploys a Vessel
+- **The Crew** — the specialist members that run the Vessel's operations
+- **2do queue** — the founder's decision queue; items that need approval or a choice
+- **Vault** — the Vessel's treasury; shows Funds, Credits, and Spend
+- **Activity log** — the permanent plain-language record of every crew action
+
+## What Makes Keelbase Different
+
+- Setup happens through a single conversation — no forms, no configuration screens, no technical knowledge required
+- Every crew action is recorded automatically and permanently in plain language
+- The crew operates within spend boundaries the founder sets; nothing above those limits moves without explicit approval
+- Business context is hardware-isolated per session — not stored or used to train models
+- The founder's role is three things: set the direction, make decisions when asked, talk to Mira when something needs to change
+
+## Who Keelbase Is For
+
+Founders who have a business idea and want it to run without managing the operations. Non-technical founders who have been excluded from the AI-native company category because they couldn't wire up the infrastructure themselves. AI-native founders who want sovereign, accountable infrastructure rather than a pile of scripts.
+
+## Access
+
+Keelbase is in private beta. Early access is by waitlist at keelbase.io. The first cohort is small. Founders join the waitlist and are contacted when their cohort opens.
+
+## Contact
+
+ahoy@keelbase.io
+https://keelbase.io
+https://twitter.com/keelbase
