@@ -32,7 +32,7 @@ async function writeToNotion(email: string, idea: string): Promise<string> {
           date: { start: new Date().toISOString() }
         },
         // Status
-        Status: { select: { name: 'On waitlist' } },
+        Status: { status: { name: 'On waitlist' } },
       },
     }),
   })
