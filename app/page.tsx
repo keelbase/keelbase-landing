@@ -429,6 +429,7 @@ export default function Home() {
             <div style={{ display: 'flex', gap: '2rem' }}>
               <a href="#vessel"       className="nav-link">The Vessel</a>
               <a href="#how-it-works" className="nav-link">How it Works</a>
+              <a href="/blog"         className="nav-link">Journal</a>
               <a href="#waitlist"     className="nav-link">Early Access</a>
             </div>
             <a href="#waitlist" className="btn btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.75rem' }}>
@@ -446,6 +447,7 @@ export default function Home() {
         <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
           <a href="#vessel"       onClick={() => setMenuOpen(false)}>The Vessel</a>
           <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it Works</a>
+          <a href="/blog"         onClick={() => setMenuOpen(false)}>Journal</a>
           <a href="#waitlist"     onClick={() => setMenuOpen(false)}>Early Access</a>
           <a href="#waitlist"     onClick={() => setMenuOpen(false)}>Request Access</a>
         </div>
