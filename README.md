@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Keelbase — Landing Page
 
-## Getting Started
+Public landing page and waitlist for [keelbase.io](https://keelbase.io).
 
-First, run the development server:
+Built with Next.js 14, Tailwind CSS, Resend, and Notion.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## What this is
+
+The Keelbase waitlist landing page. Collects founder signups, writes them to a Notion database, and sends a confirmation email via Resend.
+
+---
+
+## Stack
+
+- **Framework** — Next.js 14 (App Router)
+- **Styling** — Tailwind CSS + CSS variables
+- **Form handler** — `/app/api/waitlist/route.ts`
+- **Email** — Resend
+- **Database** — Notion API
+
+---
+
+## Environment variables
+
+Create a `.env.local` file in the project root (never committed):
+
+```
+NOTION_API_KEY=secret_xxxx
+NOTION_DATABASE_ID=xxxx
+RESEND_API_KEY=re_xxxx
+TEAM_EMAIL=ahoy@keelbase.io
+FROM_EMAIL=Keelbase <ahoy@keelbase.io>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For production, add these in Vercel under Project → Settings → Environment Variables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Notion database structure
 
-## Learn More
+The waitlist database expects these properties:
 
-To learn more about Next.js, take a look at the following resources:
+| Property | Type |
+|---|---|
+| Lead | Title |
+| Email | Email |
+| Idea | Text |
+| Submitted At | Date |
+| Status | Select (default: On waitlist) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Local development
 
-## Deploy on Vercel
+```bash
+npm install
+npm run build
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The dev server (`npm run dev`) runs but may be slow in WSL environments. Use build + start for local preview.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Deployment
+
+Deployed automatically via Vercel on push to `main`.
+
+---
+
+*Every company needs a keel.*
