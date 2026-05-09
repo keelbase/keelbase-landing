@@ -509,7 +509,7 @@ export default function Home() {
         <div className="container">
           <span className="label label-dark reveal">The Moment</span>
           <h2 className="reveal reveal-d1" style={{ color: 'var(--text-light)', maxWidth: '760px', marginBottom: '3rem' }}>
-            The output of a twenty-person team.<br /><em>One founder. The crew doing the work.</em>
+            The output of a full team.<br /><em>One founder. The crew doing the work.</em>
           </h2>
           <div style={{ maxWidth: '640px', borderTop: '1px solid var(--border-dark)', paddingTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             {[

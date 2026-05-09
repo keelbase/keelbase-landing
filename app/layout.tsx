@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Keelbase — Build an AI-native business in a conversation',
+  title: 'Keelbase | Build an AI-native business in a conversation',
   description: 'Keelbase is the platform for launching and running an AI-native business. Describe your idea. Your crew, governance, payments, and website are configured in a single conversation.',
   keywords: 'AI-native business, AI company builder, build a business with AI, no-code AI company, autonomous business platform, founder tools',
   metadataBase: new URL('https://keelbase.io'),
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     site: '@keelbase',
-    title: 'Keelbase — Build an AI-native business in a conversation',
+    title: 'Keelbase | Build an AI-native business in a conversation',
     description: "Your business idea doesn't need a developer. It needs a Vessel.",
     images: ['/og-image.png'],
   },
