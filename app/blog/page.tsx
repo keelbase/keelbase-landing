@@ -291,7 +291,6 @@ export default async function BlogIndex() {
               <a href="/#vessel"       className="blog-nav-link">The Vessel</a>
               <a href="/#how-it-works" className="blog-nav-link">How it Works</a>
               <a href="/blog"          className="blog-nav-link active">Journal</a>
-              <a href="/#waitlist"     className="blog-nav-link">Early Access</a>
             </div>
             <a href="/#waitlist" className="btn btn-primary"
               style={{ padding: '0.6rem 1.25rem', fontSize: '0.75rem' }}>

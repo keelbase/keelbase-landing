@@ -354,7 +354,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               <a href="/#vessel"       className="blog-nav-link">The Vessel</a>
               <a href="/#how-it-works" className="blog-nav-link">How it Works</a>
               <a href="/blog"          className="blog-nav-link active">Journal</a>
-              <a href="/#waitlist"     className="blog-nav-link">Early Access</a>
             </div>
             <a href="/#waitlist" className="btn btn-primary"
               style={{ padding: '0.6rem 1.25rem', fontSize: '0.75rem' }}>
@@ -564,7 +563,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      {/* ── Back + CTA ── */}
+      {/* ── Back ── */}
       <section style={{
         background: 'var(--light)',
         borderTop: '1px solid var(--border-light)',
@@ -573,8 +572,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <div style={{
           maxWidth: '720px', margin: '0 auto',
           padding: '0 clamp(1.5rem, 5vw, 3rem)',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          flexWrap: 'wrap', gap: '1rem',
         }}>
           <Link href="/blog" style={{
             fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 500,
@@ -582,10 +579,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             color: 'var(--accent)', textDecoration: 'none',
           }}>
             ← All entries
-          </Link>
-          <Link href="/#waitlist" className="btn btn-primary cta-primary"
-            style={{ padding: '0.65rem 1.3rem', fontSize: '0.75rem' }}>
-            Request Access →
           </Link>
         </div>
       </section>

@@ -37,6 +37,7 @@ type NotionPage = {
     Author:    { rich_text: RichText[] }
     Date:      { date: { start: string } | null }
     Published: { checkbox: boolean }
+    Cover:     { rich_text: RichText[] }
   }
 }
 
@@ -49,7 +50,7 @@ function extractPost(page: NotionPage): Post {
     excerpt: p.Excerpt?.rich_text?.[0]?.plain_text ?? '',
     author:  p.Author?.rich_text?.[0]?.plain_text  ?? 'Keelbase',
     date:    p.Date?.date?.start                   ?? '',
-    cover:   page.cover?.external?.url ?? page.cover?.file?.url ?? null,
+    cover:   p.Cover?.rich_text?.[0]?.plain_text ?? page.cover?.external?.url ?? page.cover?.file?.url ?? null,
   }
 }
 
