@@ -448,7 +448,6 @@ export default function Home() {
           <a href="#vessel"       onClick={() => setMenuOpen(false)}>The Vessel</a>
           <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it Works</a>
           <a href="/blog"         onClick={() => setMenuOpen(false)}>Journal</a>
-          <a href="#waitlist"     onClick={() => setMenuOpen(false)}>Early Access</a>
           <a href="#waitlist"     onClick={() => setMenuOpen(false)}>Request Access</a>
         </div>
       </nav>
