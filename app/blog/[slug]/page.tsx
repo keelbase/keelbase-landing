@@ -15,13 +15,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return {}
+  const url = `https://keelbase.io/blog/${slug}`
+  const image = post.cover || 'https://keelbase.io/og-image.png'
   return {
     title: `${post.title} — Keelbase Journal`,
     description: post.excerpt || 'An essay from Keelbase.',
     openGraph: {
+      type: 'article',
+      url,
       title: post.title,
-      description: post.excerpt,
-      images: post.cover ? [post.cover] : ['/og-image.png'],
+      description: post.excerpt || 'An essay from Keelbase.',
+      images: [{ url: image, width: 1200, height: 675, alt: post.title }],
+      siteName: 'Keelbase',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: '@keelbase',
+      title: post.title,
+      description: post.excerpt || 'An essay from Keelbase.',
+      images: [image],
     },
   }
 }
@@ -471,7 +483,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
             {/* X / Twitter */}
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://keelbase.io/blog/${post.slug}`)}&via=keelbase`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${post.excerpt ? post.excerpt + '\n\n' : ''}${post.title}`)}&url=${encodeURIComponent(`https://keelbase.io/blog/${post.slug}`)}&via=keelbase`}
               target="_blank" rel="noopener noreferrer"
               className="share-btn"
               style={{
