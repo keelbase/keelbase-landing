@@ -321,9 +321,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         .cta-primary:hover { background: var(--dark-soft) !important; border-color: var(--dark-soft) !important; }
         .cta-ghost:hover { border-color: var(--text-light-dim) !important; color: var(--text-light) !important; }
 
+        /* Share buttons */
+        .share-btn { border-radius: 0; }
+
         @media (max-width: 768px) {
           .blog-nav-desktop { display: none !important; }
           .post-lede::first-letter { font-size: 3.2em; margin-top: 8px; }
+          #back-to-top { bottom: 1.25rem; right: 1.25rem; }
         }
       `}</style>
 
@@ -444,6 +448,122 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </p>
       </section>
 
+      {/* ── Social sharing + AI reference ── */}
+      <section style={{
+        background: 'var(--light)',
+        borderTop: '1px solid var(--border-light)',
+        padding: 'clamp(2rem, 4vw, 3rem) 0',
+      }}>
+        <div style={{
+          maxWidth: '720px', margin: '0 auto',
+          padding: '0 clamp(1.5rem, 5vw, 3rem)',
+          display: 'flex', flexDirection: 'column', gap: '1.75rem',
+        }}>
+
+          {/* Share row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <span style={{
+              fontFamily: 'var(--font-display)', fontSize: '0.65rem', fontWeight: 500,
+              letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--text-muted)',
+              marginRight: '0.25rem',
+            }}>
+              Share
+            </span>
+
+            {/* X / Twitter */}
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://keelbase.io/blog/${post.slug}`)}&via=keelbase`}
+              target="_blank" rel="noopener noreferrer"
+              className="share-btn"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 500,
+                letterSpacing: '0.06em', textTransform: 'uppercase',
+                color: 'var(--text-mid)', textDecoration: 'none',
+                border: '1px solid var(--border-light)',
+                padding: '0.5rem 0.9rem',
+                transition: 'border-color 0.2s, color 0.2s',
+              }}
+              aria-label="Share on X"
+            >
+              {/* X icon */}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              X
+            </a>
+
+            {/* LinkedIn */}
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://keelbase.io/blog/${post.slug}`)}`}
+              target="_blank" rel="noopener noreferrer"
+              className="share-btn"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 500,
+                letterSpacing: '0.06em', textTransform: 'uppercase',
+                color: 'var(--text-mid)', textDecoration: 'none',
+                border: '1px solid var(--border-light)',
+                padding: '0.5rem 0.9rem',
+                transition: 'border-color 0.2s, color 0.2s',
+              }}
+              aria-label="Share on LinkedIn"
+            >
+              {/* LinkedIn icon */}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn
+            </a>
+
+            {/* Copy link — needs minimal client JS */}
+            <button
+              id="copy-link-btn"
+              className="share-btn"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 500,
+                letterSpacing: '0.06em', textTransform: 'uppercase',
+                color: 'var(--text-mid)',
+                border: '1px solid var(--border-light)',
+                padding: '0.5rem 0.9rem',
+                background: 'transparent', cursor: 'pointer',
+                transition: 'border-color 0.2s, color 0.2s',
+              }}
+              aria-label="Copy link"
+            >
+              {/* Link icon */}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+              </svg>
+              <span id="copy-link-label">Copy link</span>
+            </button>
+          </div>
+
+          {/* AI reference line */}
+          <p style={{
+            fontFamily: 'var(--font-display)', fontSize: '0.65rem',
+            letterSpacing: '0.06em', color: 'var(--text-muted)',
+            display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap',
+          }}>
+            <span style={{ opacity: 0.6 }}>AI reference</span>
+            <span style={{ color: 'var(--border-light)' }}>·</span>
+            <a
+              href={`/blog/${post.slug}/llms.txt`}
+              style={{
+                color: 'var(--accent)', textDecoration: 'none',
+                fontFamily: 'monospace', fontSize: '0.7rem',
+                transition: 'opacity 0.2s',
+              }}
+            >
+              {`keelbase.io/blog/${post.slug}/llms.txt`}
+            </a>
+          </p>
+
+        </div>
+      </section>
+
       {/* ── Back + CTA ── */}
       <section style={{
         background: 'var(--light)',
@@ -469,6 +589,28 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </Link>
         </div>
       </section>
+
+      {/* ── Back to top button (fixed, appears after scroll) ── */}
+      <button
+        id="back-to-top"
+        aria-label="Back to top"
+        style={{
+          position: 'fixed', bottom: '2rem', right: '2rem',
+          width: '44px', height: '44px',
+          background: 'var(--dark)', border: '1px solid var(--border-dark)',
+          color: 'var(--text-light)', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          opacity: 0, pointerEvents: 'none',
+          transition: 'opacity 0.3s, transform 0.3s, background 0.2s',
+          transform: 'translateY(8px)',
+          zIndex: 50,
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 15l-6-6-6 6"/>
+        </svg>
+      </button>
 
       {/* ── Waitlist CTA section ── */}
       <section style={{ background: 'var(--dark)', padding: 'clamp(4rem, 8vw, 6rem) 0' }}>
@@ -532,18 +674,82 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
       </footer>
 
-      {/* Reading progress — minimal inline script, runs once on mount */}
+      {/* Inline scripts — reading progress, back to top, copy link, share hover */}
       <script dangerouslySetInnerHTML={{ __html: `
         (function(){
+          // Reading progress bar
           var bar = document.getElementById('reading-progress');
-          if (!bar) return;
+          var btt = document.getElementById('back-to-top');
+
           function update() {
             var h = document.documentElement;
-            var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
-            bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+            var scrolled = h.scrollTop;
+            var total = h.scrollHeight - h.clientHeight;
+            var pct = total > 0 ? (scrolled / total * 100) : 0;
+
+            if (bar) bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+
+            // Back to top — show after 400px scroll
+            if (btt) {
+              if (scrolled > 400) {
+                btt.style.opacity = '1';
+                btt.style.pointerEvents = 'auto';
+                btt.style.transform = 'translateY(0)';
+              } else {
+                btt.style.opacity = '0';
+                btt.style.pointerEvents = 'none';
+                btt.style.transform = 'translateY(8px)';
+              }
+            }
           }
+
           window.addEventListener('scroll', update, { passive: true });
           update();
+
+          // Back to top click
+          if (btt) {
+            btt.addEventListener('click', function() {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            btt.addEventListener('mouseenter', function() {
+              btt.style.background = 'var(--accent)';
+              btt.style.borderColor = 'var(--accent)';
+            });
+            btt.addEventListener('mouseleave', function() {
+              btt.style.background = 'var(--dark)';
+              btt.style.borderColor = 'var(--border-dark)';
+            });
+          }
+
+          // Copy link button
+          var copyBtn = document.getElementById('copy-link-btn');
+          var copyLabel = document.getElementById('copy-link-label');
+          if (copyBtn && copyLabel) {
+            copyBtn.addEventListener('click', function() {
+              navigator.clipboard.writeText(window.location.href).then(function() {
+                copyLabel.textContent = 'Copied';
+                copyBtn.style.borderColor = 'var(--accent)';
+                copyBtn.style.color = 'var(--accent)';
+                setTimeout(function() {
+                  copyLabel.textContent = 'Copy link';
+                  copyBtn.style.borderColor = 'var(--border-light)';
+                  copyBtn.style.color = 'var(--text-mid)';
+                }, 2000);
+              });
+            });
+          }
+
+          // Share button hover states
+          document.querySelectorAll('.share-btn').forEach(function(btn) {
+            btn.addEventListener('mouseenter', function() {
+              btn.style.borderColor = 'var(--accent)';
+              btn.style.color = 'var(--dark)';
+            });
+            btn.addEventListener('mouseleave', function() {
+              btn.style.borderColor = 'var(--border-light)';
+              btn.style.color = 'var(--text-mid)';
+            });
+          });
         })();
       `}} />
     </>

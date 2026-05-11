@@ -41,6 +41,16 @@ Specialist members configured to the founder's business — research, outreach, 
 
 Founders who have a business idea and want it to run without managing the operations. Non-technical founders who have been excluded from the AI-native company category because they couldn't wire up the infrastructure themselves. AI-native founders who want sovereign, accountable infrastructure rather than a pile of scripts.
 
+## Journal
+
+Essays on how small businesses get built in an age when the work about the work no longer needs the founder. Long-form, occasional, slow.
+
+Full content: https://keelbase.io/llms-full.txt
+
+### Published
+
+- [The company of one is dead. The company of one with a crew is just getting started.](https://keelbase.io/blog/company-of-one-with-a-crew) — The constraint behind staying small was staying alone. That constraint is gone. Per-post reference: https://keelbase.io/blog/company-of-one-with-a-crew/llms.txt
+
 ## Access
 
 Keelbase is in private beta. Early access is by waitlist at keelbase.io. The first cohort is small. Founders join the waitlist and are contacted when their cohort opens.

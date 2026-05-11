@@ -1,0 +1,86 @@
+# Keelbase — Journal (Full Content)
+
+> Complete text of all published journal entries. Updated when new entries are published.
+> Index: https://keelbase.io/llms.txt
+> Journal: https://keelbase.io/blog
+
+---
+
+## Entry 001 — The company of one is dead. The company of one with a crew is just getting started.
+
+URL: https://keelbase.io/blog/company-of-one-with-a-crew
+Published: May 11, 2026
+Author: Keelbase
+Per-post reference: https://keelbase.io/blog/company-of-one-with-a-crew/llms.txt
+
+There is a kind of business that has always been the dream and the trap at the same time.
+
+You make the thing. You sell the thing. You answer the email about the thing. You chase the invoice for the thing. You file the tax return that includes the thing. You write the newsletter that says how the thing is going. You update the website where people buy the thing. You handle the supplier when something goes wrong with the thing.
+
+You are the company. The company is you. When you stop, it stops.
+
+Paul Jarvis named the movement in 2018. *Company of One.* Stay small on purpose. Question the assumption that growth is always good. Be better, not bigger. He was right about almost all of it. The autonomy is real. The simplicity is real. The point — that you do not have to want what the venture-backed playbook tells you to want — is exactly right and probably more right now than it was then.
+
+The constraint behind it was that staying small meant staying alone.
+
+That constraint is gone.
+
+### What was actually small about the company of one
+
+It was never the ambition that was small. It was the operation.
+
+The ambition was always the same as anyone else's. Make something good. Reach the people who want it. Have a real life on the other side of the work. Build something that lasts.
+
+The operation was small because the operation was you. One person, doing seven jobs, on Tuesday afternoon, between the school run and the next batch of orders. There was no other way. Hiring meant overhead. Overhead meant scale. Scale meant the thing you did not want.
+
+So the operation stayed small. Which meant the ambition got cut to fit it.
+
+The newsletter you would have sent — you did not send. The follow-up email you would have written — you did not write. The supplier you would have switched to — you stayed with the old one because switching was three hours you did not have. The customer who asked you a question on Sunday night — they got an answer on Thursday because Sunday night was for sleeping.
+
+The company of one made you choose between the work and the work *about* the work. Most people chose the work. The operation around it stayed half-built forever. That was the cost. Nobody priced it because there was no alternative.
+
+### What is different now
+
+The alternative is a crew.
+
+Not a team you hire. Not a virtual assistant. Not three contractors in three time zones who need three Slack channels and three onboarding documents. A crew that runs the operation. The newsletter that would have been sent — gets sent. The follow-up that would have been written — gets written. The customer who asks a question on Sunday night — gets an answer on Sunday night.
+
+You do not manage them. You do not assign them tickets. You do not stand them up in the morning. You tell them what the business is and what you want it to feel like. They run.
+
+Your job stays small. Make the thing. Decide the things only you can decide. Talk to the one person — Mira, your first mate — who knows everything that is happening and tells you only what matters.
+
+Their job is everything else.
+
+The maths the company-of-one writers did was right for their decade. Hiring real people was expensive, slow, hard to undo, hard to manage, and prone to dragging the founder back into the work *about* the work — which was the original problem. So the answer was: don't hire. Stay small. Accept the ceiling.
+
+The ceiling moved. A crew is no longer expensive. It is no longer slow. It does not need managing in the old sense. It does not pull you back into operations. The trade-off that made staying solo the only sane path — that trade-off does not hold anymore.
+
+### The new shape
+
+A founder. A crew. A keel.
+
+The founder is the person with the idea and the taste. That has not changed. It will not change. The thing that needs a person was always the part that needed a person — the judgement, the choice, the relationship with the people you make it for. AI does not replace that. It would be a worse business if it did.
+
+The crew is everything around the idea. The marketing the founder did not have time for. The replies the founder did not have hours for. The bookkeeping the founder dreaded. The follow-ups the founder forgot. The structure the founder never built. All of it, running, while the founder is at the wheel making the next thing.
+
+The keel is what keeps it on course when conditions change. The structure underneath. The ownership. The record of every decision. The reason this is a business and not a clever hack.
+
+This is not the company of one made bigger. It is the company of one made whole.
+
+### Why this is the moment
+
+Two things became true at the same time.
+
+The first: AI got good enough to actually do the work. Not the demo. The work. The kind that has to ship on a Tuesday and be defensible on a Wednesday and not embarrass you on a Thursday.
+
+The second: the cost of running a sovereign business — one with its own structure, its own funds, its own record, its own crew — collapsed. What used to take a co-founder, a developer, a setup fee, and six months now takes a conversation. The infrastructure exists. The legal scaffolding exists. The payments exist. The privacy exists. None of it needs to be assembled by you.
+
+These two things were not true in 2018. They are true now.
+
+The next decade of small businesses will not be one person doing seven jobs. They will be one person doing one job — the one they are good at — with a crew handling the other six. Some will look like solo operations. Some will look like staffed businesses. The line between the two will stop meaning what it used to mean.
+
+The founders who get this first will spend the next ten years building the businesses they always meant to build.
+
+Everyone else will keep choosing between the work and the work *about* the work.
+
+The dream was always good enough. Now it can run.
