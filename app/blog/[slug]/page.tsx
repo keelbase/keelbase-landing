@@ -1,3 +1,6 @@
+// app/blog/[slug]/page.tsx
+// Drop-in replacement. No new dependencies.
+
 import { getPostBySlug, getAllSlugs, getBlocks, NotionBlock } from '@/lib/notion'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -8,6 +11,21 @@ export async function generateStaticParams() {
   return slugs.map(slug => ({ slug }))
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
+  if (!post) return {}
+  return {
+    title: `${post.title} — Keelbase Journal`,
+    description: post.excerpt || 'An essay from Keelbase.',
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: post.cover ? [post.cover] : ['/og-image.png'],
+    },
+  }
+}
+
 function formatDate(dateStr: string): string {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -15,51 +33,103 @@ function formatDate(dateStr: string): string {
   })
 }
 
-function getRichTextContent(richText: Array<{ plain_text: string; annotations?: { bold?: boolean; italic?: boolean; code?: boolean }; href?: string | null }>): string {
-  return richText?.map(t => t.plain_text).join('') ?? ''
+// ── Rich text renderer — handles bold, italic, code, links ───────────────────
+type RichTextItem = {
+  plain_text: string
+  annotations?: { bold?: boolean; italic?: boolean; code?: boolean; strikethrough?: boolean }
+  href?: string | null
 }
 
-function renderBlock(block: NotionBlock): React.ReactNode {
-  const type = block.type
-  const content = block[type] as { rich_text?: Array<{ plain_text: string; annotations?: { bold?: boolean; italic?: boolean; code?: boolean }; href?: string | null }>; url?: string; caption?: Array<{ plain_text: string }>; language?: string }
+function RichText({ items }: { items: RichTextItem[] }) {
+  return (
+    <>
+      {items.map((item, i) => {
+        let node: React.ReactNode = item.plain_text
+        if (item.annotations?.code) {
+          node = (
+            <code key={i} style={{
+              fontFamily: 'monospace', fontSize: '0.88em',
+              background: 'var(--light-mid)', padding: '2px 6px',
+              border: '1px solid var(--border-light)',
+            }}>
+              {node}
+            </code>
+          )
+        }
+        if (item.annotations?.bold)          node = <strong key={i} style={{ fontWeight: 600, color: 'var(--dark)' }}>{node}</strong>
+        if (item.annotations?.italic)        node = <em key={i} style={{ fontStyle: 'italic' }}>{node}</em>
+        if (item.annotations?.strikethrough) node = <s key={i}>{node}</s>
+        if (item.href) {
+          node = (
+            <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" style={{
+              color: 'var(--accent)', textDecoration: 'underline',
+              textDecorationColor: 'var(--border-light)', textUnderlineOffset: '3px',
+              transition: 'color 0.2s',
+            }}>
+              {node}
+            </a>
+          )
+        }
+        return <span key={i}>{node}</span>
+      })}
+    </>
+  )
+}
 
-  const baseParaStyle = {
-    fontFamily: 'var(--font-body)',
-    fontSize: '1.05rem',
-    color: 'var(--text-mid)',
-    lineHeight: 1.85,
-    marginBottom: '1.5rem',
+// ── Block renderer ────────────────────────────────────────────────────────────
+const baseParaStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-body)',
+  fontSize: 'clamp(1rem, 1.3vw, 1.08rem)',
+  color: 'var(--text-mid)',
+  lineHeight: 1.88,
+  marginBottom: '1.6rem',
+}
+
+function renderBlock(block: NotionBlock, index: number): React.ReactNode {
+  const type = block.type
+  const content = block[type] as {
+    rich_text?: RichTextItem[]
+    url?: string
+    caption?: RichTextItem[]
+    language?: string
+    external?: { url: string }
+    file?: { url: string }
   }
+  const rt = content?.rich_text ?? []
 
   switch (type) {
     case 'paragraph':
+      if (!rt.length) return <div key={block.id} style={{ height: '0.8rem' }} />
       return (
-        <p key={block.id} style={baseParaStyle}>
-          {getRichTextContent(content?.rich_text ?? [])}
+        <p key={block.id} style={{
+          ...baseParaStyle,
+          // First paragraph in body gets special lede treatment (handled by CSS class below)
+        }} className={index === 0 ? 'post-lede' : ''}>
+          <RichText items={rt} />
         </p>
       )
 
     case 'heading_1':
       return (
         <h1 key={block.id} style={{
-          fontFamily: 'var(--font-display)', fontWeight: 400,
-          fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', lineHeight: 1.2,
-          color: 'var(--dark)', letterSpacing: '-0.01em',
-          marginTop: '3rem', marginBottom: '1.25rem',
+          fontFamily: 'var(--font-display)', fontWeight: 300,
+          fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', lineHeight: 1.15,
+          letterSpacing: '-0.02em', color: 'var(--dark)',
+          marginTop: '3.5rem', marginBottom: '1.25rem',
         }}>
-          {getRichTextContent(content?.rich_text ?? [])}
+          <RichText items={rt} />
         </h1>
       )
 
     case 'heading_2':
       return (
         <h2 key={block.id} style={{
-          fontFamily: 'var(--font-display)', fontWeight: 400,
-          fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)', lineHeight: 1.25,
-          color: 'var(--dark)', letterSpacing: '-0.01em',
-          marginTop: '2.5rem', marginBottom: '1rem',
+          fontFamily: 'var(--font-display)', fontWeight: 300,
+          fontSize: 'clamp(1.4rem, 2.4vw, 1.85rem)', lineHeight: 1.2,
+          letterSpacing: '-0.015em', color: 'var(--dark)',
+          marginTop: '3rem', marginBottom: '1rem',
         }}>
-          {getRichTextContent(content?.rich_text ?? [])}
+          <RichText items={rt} />
         </h2>
       )
 
@@ -67,69 +137,64 @@ function renderBlock(block: NotionBlock): React.ReactNode {
       return (
         <h3 key={block.id} style={{
           fontFamily: 'var(--font-display)', fontWeight: 500,
-          fontSize: '1rem', letterSpacing: '0.06em', textTransform: 'uppercase',
-          color: 'var(--accent)', marginTop: '2rem', marginBottom: '0.75rem',
+          fontSize: '0.75rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: 'var(--accent)', marginTop: '2.25rem', marginBottom: '0.75rem',
         }}>
-          {getRichTextContent(content?.rich_text ?? [])}
+          <RichText items={rt} />
         </h3>
-      )
-
-    case 'bulleted_list_item':
-      return (
-        <li key={block.id} style={{ ...baseParaStyle, marginBottom: '0.5rem' }}>
-          {getRichTextContent(content?.rich_text ?? [])}
-        </li>
-      )
-
-    case 'numbered_list_item':
-      return (
-        <li key={block.id} style={{ ...baseParaStyle, marginBottom: '0.5rem' }}>
-          {getRichTextContent(content?.rich_text ?? [])}
-        </li>
       )
 
     case 'quote':
       return (
         <blockquote key={block.id} style={{
-          borderLeft: '3px solid var(--accent)',
-          paddingLeft: '1.5rem', marginLeft: 0,
-          marginBottom: '1.75rem',
+          borderLeft: '2px solid var(--accent)',
+          paddingLeft: '1.75rem', marginLeft: 0,
+          marginTop: '2rem', marginBottom: '2rem',
         }}>
-          <p style={{ ...baseParaStyle, marginBottom: 0, fontStyle: 'italic', color: 'var(--dark)' }}>
-            {getRichTextContent(content?.rich_text ?? [])}
+          <p style={{ ...baseParaStyle, marginBottom: 0, fontStyle: 'italic', color: 'var(--dark)', fontSize: 'clamp(1.05rem, 1.5vw, 1.2rem)' }}>
+            <RichText items={rt} />
           </p>
         </blockquote>
+      )
+
+    case 'divider':
+      return (
+        <div key={block.id} style={{
+          textAlign: 'center', margin: '3rem 0',
+          fontFamily: 'var(--font-body)', fontSize: '1rem',
+          color: 'var(--text-muted)', letterSpacing: '0.5em',
+          paddingLeft: '0.5em',
+        }}>
+          · · ·
+        </div>
       )
 
     case 'code':
       return (
         <pre key={block.id} style={{
-          background: 'var(--surface, #1a1a17)', color: 'var(--text, #e8e4d9)',
+          background: 'var(--dark)', color: 'var(--text-light-mid)',
           padding: '1.25rem 1.5rem', overflowX: 'auto',
           fontFamily: 'monospace', fontSize: '0.88rem', lineHeight: 1.7,
-          marginBottom: '1.75rem',
+          marginBottom: '1.75rem', border: '1px solid var(--border-dark)',
         }}>
-          <code>{getRichTextContent(content?.rich_text ?? [])}</code>
+          <code><RichText items={rt} /></code>
         </pre>
       )
 
-    case 'divider':
-      return <hr key={block.id} style={{ border: 'none', borderTop: '1px solid var(--border-light)', margin: '2.5rem 0' }} />
-
     case 'image': {
-      const imgContent = block[type] as { type: string; external?: { url: string }; file?: { url: string }; caption?: Array<{ plain_text: string }> }
+      const imgContent = block[type] as { type: string; external?: { url: string }; file?: { url: string }; caption?: RichTextItem[] }
       const url = imgContent?.external?.url ?? imgContent?.file?.url ?? ''
-      const caption = imgContent?.caption?.map((t: { plain_text: string }) => t.plain_text).join('') ?? ''
+      const caption = imgContent?.caption?.map(t => t.plain_text).join('') ?? ''
       if (!url) return null
       return (
-        <figure key={block.id} style={{ marginBottom: '2rem' }}>
-          <Image src={url} alt={caption || 'Image'} width={800} height={450}
-            style={{ width: '100%', height: 'auto', display: 'block' }} />
+        <figure key={block.id} style={{ margin: '2.5rem 0' }}>
+          <Image src={url} alt={caption || 'Image'} width={720} height={405}
+            style={{ width: '100%', height: 'auto', display: 'block', border: '1px solid var(--border-light)' }} />
           {caption && (
             <figcaption style={{
-              fontFamily: 'var(--font-display)', fontSize: '0.78rem',
+              fontFamily: 'var(--font-display)', fontSize: '0.72rem',
               color: 'var(--text-muted)', textAlign: 'center',
-              marginTop: '0.75rem', letterSpacing: '0.02em',
+              marginTop: '0.75rem', letterSpacing: '0.04em',
             }}>
               {caption}
             </figcaption>
@@ -139,53 +204,74 @@ function renderBlock(block: NotionBlock): React.ReactNode {
     }
 
     case 'callout': {
-      const calloutContent = block[type] as { rich_text?: Array<{ plain_text: string }> }
+      const calloutContent = block[type] as { rich_text?: RichTextItem[] }
       return (
         <div key={block.id} style={{
-          background: 'var(--light-mid, #e8f0f0)',
+          background: 'var(--light-mid)',
           border: '1px solid var(--border-light)',
-          borderLeft: '3px solid var(--accent)',
+          borderLeft: '2px solid var(--accent)',
           padding: '1.25rem 1.5rem', marginBottom: '1.75rem',
         }}>
           <p style={{ ...baseParaStyle, marginBottom: 0 }}>
-            {getRichTextContent(calloutContent?.rich_text ?? [])}
+            <RichText items={calloutContent?.rich_text ?? []} />
           </p>
         </div>
       )
     }
+
+    case 'bulleted_list_item':
+    case 'numbered_list_item':
+      return (
+        <li key={block.id} style={{ ...baseParaStyle, marginBottom: '0.5rem' }}>
+          <RichText items={rt} />
+        </li>
+      )
 
     default:
       return null
   }
 }
 
-function groupListItems(blocks: NotionBlock[]): React.ReactNode[] {
+// ── Group consecutive list items into <ul>/<ol> ───────────────────────────────
+function groupBlocks(blocks: NotionBlock[]): React.ReactNode[] {
   const result: React.ReactNode[] = []
   let i = 0
+  let bodyIndex = 0 // track paragraph index for lede class
+
   while (i < blocks.length) {
     const block = blocks[i]
+
     if (block.type === 'bulleted_list_item') {
       const items: React.ReactNode[] = []
       while (i < blocks.length && blocks[i].type === 'bulleted_list_item') {
-        items.push(renderBlock(blocks[i]))
+        items.push(renderBlock(blocks[i], bodyIndex++))
         i++
       }
-      result.push(<ul key={`ul-${i}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>{items}</ul>)
+      result.push(
+        <ul key={`ul-${i}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>
+          {items}
+        </ul>
+      )
     } else if (block.type === 'numbered_list_item') {
       const items: React.ReactNode[] = []
       while (i < blocks.length && blocks[i].type === 'numbered_list_item') {
-        items.push(renderBlock(blocks[i]))
+        items.push(renderBlock(blocks[i], bodyIndex++))
         i++
       }
-      result.push(<ol key={`ol-${i}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>{items}</ol>)
+      result.push(
+        <ol key={`ol-${i}`} style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>
+          {items}
+        </ol>
+      )
     } else {
-      result.push(renderBlock(block))
+      result.push(renderBlock(block, block.type === 'paragraph' ? bodyIndex++ : -1))
       i++
     }
   }
   return result
 }
 
+// ── Page ─────────────────────────────────────────────────────────────────────
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
@@ -195,33 +281,116 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <>
+      <style>{`
+        .blog-nav-link {
+          font-family: var(--font-display); font-weight: 400;
+          font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+          color: var(--text-mid); text-decoration: none; transition: color 0.2s;
+        }
+        .blog-nav-link:hover { color: var(--dark); }
+        .blog-nav-link.active { color: var(--dark); font-weight: 500; }
+        .blog-nav-desktop { display: flex; align-items: center; gap: 2.5rem; }
+
+        /* Reading progress bar */
+        #reading-progress {
+          position: fixed; top: 64px; left: 0; height: 2px;
+          background: var(--accent); width: 0%; z-index: 101;
+          transition: width 0.08s linear;
+        }
+
+        /* Lede — first paragraph larger, with drop cap */
+        .post-lede {
+          font-size: clamp(1.1rem, 1.6vw, 1.22rem) !important;
+          color: var(--dark) !important;
+          line-height: 1.78 !important;
+          margin-bottom: 2rem !important;
+        }
+        .post-lede::first-letter {
+          font-family: var(--font-display);
+          font-size: 4.2em; font-weight: 300;
+          float: left; line-height: 0.88;
+          margin: 10px 14px 0 0;
+          color: var(--accent);
+        }
+
+        /* Back link hover */
+        .back-link { transition: color 0.2s, gap 0.2s; }
+        .back-link:hover { color: var(--dark) !important; }
+
+        /* CTA hover */
+        .cta-primary:hover { background: var(--dark-soft) !important; border-color: var(--dark-soft) !important; }
+        .cta-ghost:hover { border-color: var(--text-light-dim) !important; color: var(--text-light) !important; }
+
+        @media (max-width: 768px) {
+          .blog-nav-desktop { display: none !important; }
+          .post-lede::first-letter { font-size: 3.2em; margin-top: 8px; }
+        }
+      `}</style>
+
+      {/* Reading progress bar (CSS only — no JS needed; actual width driven by scroll via inline script below) */}
+      <div id="reading-progress" />
+
+      {/* ── Nav ── */}
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        background: 'rgba(244,249,249,0.94)', backdropFilter: 'blur(14px)',
+        borderBottom: '1px solid var(--border-light)',
+        boxShadow: '0 1px 20px rgba(13,53,52,0.06)',
+      }}>
+        <div className="container" style={{
+          display: 'flex', alignItems: 'center',
+          justifyContent: 'space-between', height: '64px',
+        }}>
+          <a href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <Image src="/logo.png" alt="Keelbase" width={160} height={40}
+              style={{ objectFit: 'contain', height: '32px', width: 'auto' }} priority />
+          </a>
+          <div className="blog-nav-desktop">
+            <div style={{ display: 'flex', gap: '2rem' }}>
+              <a href="/#vessel"       className="blog-nav-link">The Vessel</a>
+              <a href="/#how-it-works" className="blog-nav-link">How it Works</a>
+              <a href="/blog"          className="blog-nav-link active">Journal</a>
+              <a href="/#waitlist"     className="blog-nav-link">Early Access</a>
+            </div>
+            <a href="/#waitlist" className="btn btn-primary"
+              style={{ padding: '0.6rem 1.25rem', fontSize: '0.75rem' }}>
+              Request Access
+            </a>
+          </div>
+        </div>
+      </nav>
+
       <div style={{ height: '64px' }} />
 
-      {/* Post header */}
-      <section style={{ background: 'var(--light)', borderBottom: '1px solid var(--border-light)' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto', padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 3rem)' }}>
-          <Link href="/blog" style={{
-            fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 500,
-            letterSpacing: '0.1em', textTransform: 'uppercase',
+      {/* ── Post header ── */}
+      <section style={{
+        background: 'var(--light)',
+        borderBottom: '1px solid var(--border-light)',
+        padding: 'clamp(3.5rem, 7vw, 6rem) 0 clamp(2.5rem, 5vw, 4rem)',
+      }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 3rem)' }}>
+          <Link href="/blog" className="back-link" style={{
+            fontFamily: 'var(--font-display)', fontSize: '0.68rem', fontWeight: 500,
+            letterSpacing: '0.14em', textTransform: 'uppercase',
             color: 'var(--accent)', textDecoration: 'none',
-            display: 'inline-block', marginBottom: '2.5rem',
-            transition: 'color 0.2s',
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            marginBottom: '2.5rem',
           }}>
-            ← All posts
+            ← Journal
           </Link>
 
           <p style={{
-            fontFamily: 'var(--font-display)', fontSize: '0.68rem', fontWeight: 500,
-            letterSpacing: '0.12em', textTransform: 'uppercase',
-            color: 'var(--text-muted)', marginBottom: '1rem',
+            fontFamily: 'var(--font-display)', fontSize: '0.65rem', fontWeight: 500,
+            letterSpacing: '0.16em', textTransform: 'uppercase',
+            color: 'var(--text-muted)', marginBottom: '1.1rem',
           }}>
-            {formatDate(post.date)}{post.author ? ` · ${post.author}` : ''}
+            {formatDate(post.date)}{post.author && post.author !== 'Keelbase' ? ` · ${post.author}` : ''}
           </p>
 
           <h1 style={{
-            fontFamily: 'var(--font-display)', fontWeight: 400,
-            fontSize: 'clamp(2rem, 4vw, 3.2rem)', lineHeight: 1.1,
-            letterSpacing: '-0.02em', color: 'var(--dark)',
+            fontFamily: 'var(--font-display)', fontWeight: 300,
+            fontSize: 'clamp(2rem, 4.5vw, 3.4rem)', lineHeight: 1.08,
+            letterSpacing: '-0.025em', color: 'var(--dark)',
             marginBottom: post.excerpt ? '1.5rem' : '0',
           }}>
             {post.title}
@@ -229,9 +398,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
           {post.excerpt && (
             <p style={{
-              fontFamily: 'var(--font-body)', fontSize: '1.15rem',
+              fontFamily: 'var(--font-body)', fontStyle: 'italic',
+              fontSize: 'clamp(1.05rem, 1.4vw, 1.15rem)',
               color: 'var(--text-mid)', lineHeight: 1.7,
-              fontStyle: 'italic',
+              borderTop: '1px solid var(--border-light)',
+              paddingTop: '1.25rem', marginTop: '1.25rem',
             }}>
               {post.excerpt}
             </p>
@@ -239,63 +410,102 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      {/* Cover image */}
+      {/* ── Cover image (if present) ── */}
       {post.cover && (
-        <div style={{ background: 'var(--light)', maxWidth: '720px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 3rem)' }}>
-          <Image src={post.cover} alt={post.title} width={720} height={400}
+        <div style={{
+          maxWidth: '720px', margin: '0 auto',
+          padding: '0 clamp(1.5rem, 5vw, 3rem)',
+          background: 'var(--light)',
+        }}>
+          <Image src={post.cover} alt={post.title} width={720} height={405}
             style={{ width: '100%', height: 'auto', display: 'block', borderBottom: '1px solid var(--border-light)' }} />
         </div>
       )}
 
-      {/* Post body */}
+      {/* ── Post body ── */}
       <section style={{ background: 'var(--light)', padding: 'clamp(3rem, 6vw, 5rem) 0' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 3rem)' }}>
-          {groupListItems(blocks)}
+          {groupBlocks(blocks)}
         </div>
       </section>
 
-      {/* Back link */}
-      <section style={{ background: 'var(--light)', borderTop: '1px solid var(--border-light)', padding: '3rem 0' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 3rem)' }}>
+      {/* ── Closing tagline ── */}
+      <section style={{
+        background: 'var(--light)',
+        borderTop: '1px solid var(--border-light)',
+        padding: '2.5rem 0',
+        textAlign: 'center',
+      }}>
+        <p style={{
+          fontFamily: 'var(--font-body)', fontStyle: 'italic',
+          fontSize: '1rem', color: 'var(--text-muted)',
+        }}>
+          Every company needs a keel.
+        </p>
+      </section>
+
+      {/* ── Back + CTA ── */}
+      <section style={{
+        background: 'var(--light)',
+        borderTop: '1px solid var(--border-light)',
+        padding: 'clamp(2rem, 4vw, 3rem) 0',
+      }}>
+        <div style={{
+          maxWidth: '720px', margin: '0 auto',
+          padding: '0 clamp(1.5rem, 5vw, 3rem)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          flexWrap: 'wrap', gap: '1rem',
+        }}>
           <Link href="/blog" style={{
-            fontFamily: 'var(--font-display)', fontSize: '0.78rem', fontWeight: 500,
+            fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 500,
             letterSpacing: '0.08em', textTransform: 'uppercase',
             color: 'var(--accent)', textDecoration: 'none',
           }}>
-            ← Back to all posts
+            ← All entries
+          </Link>
+          <Link href="/#waitlist" className="btn btn-primary cta-primary"
+            style={{ padding: '0.65rem 1.3rem', fontSize: '0.75rem' }}>
+            Request Access →
           </Link>
         </div>
       </section>
 
-      {/* Waitlist CTA */}
+      {/* ── Waitlist CTA section ── */}
       <section style={{ background: 'var(--dark)', padding: 'clamp(4rem, 8vw, 6rem) 0' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 3rem)', textAlign: 'center' }}>
+        <div style={{
+          maxWidth: '680px', margin: '0 auto',
+          padding: '0 clamp(1.5rem, 5vw, 3rem)',
+          textAlign: 'center',
+        }}>
           <p style={{
             fontFamily: 'var(--font-display)', fontSize: '0.68rem', fontWeight: 500,
-            letterSpacing: '0.16em', textTransform: 'uppercase',
+            letterSpacing: '0.18em', textTransform: 'uppercase',
             color: 'var(--accent-dim)', marginBottom: '1.25rem',
           }}>
             Early Access
           </p>
           <h2 style={{
             fontFamily: 'var(--font-display)', fontWeight: 300,
-            fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', lineHeight: 1.2,
+            fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', lineHeight: 1.18,
             color: 'var(--text-light)', marginBottom: '2rem',
           }}>
             Ready to build your Vessel?
           </h2>
-          <Link href="/#waitlist" className="btn btn-primary-light">
+          <Link href="/#waitlist" className="btn btn-primary-light cta-primary">
             Request access →
           </Link>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{ background: 'var(--dark)', borderTop: '1px solid var(--border-dark)', padding: '2rem 0' }}>
-        <div style={{
-          maxWidth: '1160px', margin: '0 auto',
-          padding: '0 clamp(1.5rem, 5vw, 5rem)',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
+      {/* ── Footer ── */}
+      <footer style={{
+        background: 'var(--dark)',
+        borderTop: '1px solid var(--border-dark)',
+        padding: '2rem 0',
+      }}>
+        <div className="container" style={{
+          display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', flexWrap: 'wrap', gap: '1rem',
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <p style={{ fontFamily: 'var(--font-body)', fontStyle: 'italic', fontSize: '0.9rem', color: 'var(--text-light-dim)' }}>
@@ -321,6 +531,21 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </div>
         </div>
       </footer>
+
+      {/* Reading progress — minimal inline script, runs once on mount */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        (function(){
+          var bar = document.getElementById('reading-progress');
+          if (!bar) return;
+          function update() {
+            var h = document.documentElement;
+            var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+            bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+          }
+          window.addEventListener('scroll', update, { passive: true });
+          update();
+        })();
+      `}} />
     </>
   )
 }
