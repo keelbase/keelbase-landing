@@ -430,7 +430,6 @@ export default function Home() {
               <a href="#vessel"       className="nav-link">The Vessel</a>
               <a href="#how-it-works" className="nav-link">How it Works</a>
               <a href="/blog"         className="nav-link">Journal</a>
-              <a href="#waitlist"     className="nav-link">Early Access</a>
             </div>
             <a href="#waitlist" className="btn btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.75rem' }}>
               Request Access
