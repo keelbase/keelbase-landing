@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     title: 'Keelbase — Build an AI-native business in a conversation',
     description: "Your business idea doesn't need a developer. It needs a Vessel.",
     siteName: 'Keelbase',
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    images: [{ url: '/og-image.png?v=2', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     site: '@keelbase',
     title: 'Keelbase | Build an AI-native business in a conversation',
     description: "Your business idea doesn't need a developer. It needs a Vessel.",
-    images: ['/og-image.png'],
+    images: ['/og-image.png?v=2'],
   },
   robots: {
     index: true, follow: true,

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPostBySlug(slug)
   if (!post) return {}
   const url = `https://keelbase.io/blog/${slug}`
-  const image = post.cover || 'https://keelbase.io/og-image.png'
+  const image = post.cover || 'https://keelbase.io/og-image.png?v=2'
   return {
     title: `${post.title} — Keelbase Journal`,
     description: post.excerpt || 'An essay from Keelbase.',
