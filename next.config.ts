@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
       {
         // Your own domain — journal cover images
         protocol: 'https',
-        hostname: 'keelbase.io',
+        hostname: 'www.keelbase.io',
       },
       {
         // Notion-hosted images (file uploads, page covers)

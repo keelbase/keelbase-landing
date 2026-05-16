@@ -39,7 +39,7 @@ function useNavScroll() {
 
 /* ── Typing animation ───────────────────────────────────────────── */
 const MESSAGES = [
-  { from: 'architect', text: 'Tell me about the business this Vessel will run. What does it do, who does it serve, and what does it produce?' },
+  { from: 'architect', text: 'Tell me about the company this Vessel will run. What does it do, who does it serve, and what does it produce?' },
   { from: 'founder',   text: 'A boutique M&A advisory for founder-led businesses under $20M. I manage the whole process solo — sourcing, diligence, buyer outreach, closing.' },
   { from: 'architect', text: 'Understood. That maps well to a three-tier crew: deal flow and research, outreach and document production, and buyer relationship tracking. What does success look like in the first ninety days?' },
 ]
@@ -465,7 +465,7 @@ export default function Home() {
               <p className="fade-up" style={{ fontSize: '1.05rem', color: 'var(--text-mid)', maxWidth: '520px', marginBottom: '1rem', fontFamily: 'var(--font-body)', animationDelay: '0.2s' }}>
                 That&apos;s how it starts. Describe what you&apos;re building — the idea, the audience,
                 what you want it to do. The Architect takes it from there: configures your crew,
-                sets up your governance and payments, and hands you a running business.
+                sets up your governance and payments, and the operation runs itself.
               </p>
               <p className="fade-up" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginBottom: '2.5rem', fontFamily: 'var(--font-display)', letterSpacing: '0.04em', animationDelay: '0.28s' }}>
                 One conversation. No code.
@@ -536,7 +536,7 @@ export default function Home() {
             A Vessel is your company.<br /><em>Built to run itself.</em>
           </h2>
           <p className="reveal reveal-d2" style={{ color: 'var(--text-mid)', maxWidth: '580px', marginBottom: '4rem', fontSize: '1.05rem' }}>
-            Every deployment is a Vessel — a self-operating business with its own crew,
+            Every deployment is a Vessel — a self-operating company with its own crew,
             its own governed treasury, and its own record of every decision the crew makes.
             You set the direction. You define the boundaries. The crew executes.
           </p>
@@ -544,7 +544,7 @@ export default function Home() {
             {[
               { num: 'I',   title: 'The Architect', delay: '0.05s', body: 'Your first conversation. It asks the right questions about your business, designs your crew, configures your governance and payments, and deploys your Vessel. One session. Nothing technical required on your end.' },
               { num: 'II',  title: 'Mira',          delay: '0.18s', body: 'Your permanent Liaison. Available in your dashboard and on Telegram. Mira knows your Vessel\'s history, surfaces what needs your attention, and takes instructions. Talking to your Vessel means talking to Mira.' },
-              { num: 'III', title: 'The Crew',      delay: '0.32s', body: 'Specialists configured to your business — research, outreach, operations, client workflows. The crew runs your operation within the boundaries you set. Anything outside those boundaries comes to you first.' },
+              { num: 'III', title: 'The Crew',      delay: '0.32s', body: 'Specialists configured to your company — research, outreach, operations, client workflows. The crew runs your operation within the boundaries you set. Anything outside those boundaries comes to you first.' },
             ].map((card) => (
               <div key={card.num} className="crew-card reveal" style={{ background: 'var(--light)', border: '1px solid var(--border-light)', padding: '2rem 1.75rem', transitionDelay: card.delay }}>
                 <div style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '0.6rem' }}>{card.num}</div>
@@ -566,7 +566,7 @@ export default function Home() {
           <div>
             {[
               { n: '01', title: 'Describe Your Business',          delay: '0s',   body: 'Tell the Architect what you\'re building — what it does, who it serves, what you need it to do in the first 90 days. No form. No config screen. A conversation.' },
-              { n: '02', title: 'The Architect Designs Your Crew', delay: '0.1s', body: 'It maps your business to a specialist crew configuration — asks about your workflows, your governance, your spend boundaries. At each step it tells you what it\'s building and why. At the end, you confirm.' },
+              { n: '02', title: 'The Architect Designs Your Crew', delay: '0.1s', body: 'It maps your company to a specialist crew configuration — asks about your workflows, your governance, your spend boundaries. At each step it tells you what it\'s building and why. At the end, you confirm.' },
               { n: '03', title: 'Your Vessel Deploys',             delay: '0.2s', body: 'Crew is live. Your boundaries are set. Takes minutes. The Architect hands you to Mira.' },
               { n: '04', title: 'Mira Takes Over',                 delay: '0.3s', body: 'From this moment, Mira is your interface to everything. The crew runs. You direct. When a decision needs you, it appears in your 2do queue.' },
             ].map((step) => (
@@ -594,7 +594,7 @@ export default function Home() {
           </p>
           <div>
             {[
-              { heading: 'Every decision\nis on record.',                  body: 'Your Vessel logs every consequential action your crew takes — automatically, permanently, in plain language. Not for show. Because a business that can\'t account for itself can\'t scale, and you\'ll want that record the moment something unexpected happens.' },
+              { heading: 'Every decision\nis on record.',                  body: 'Your Vessel logs every consequential action your crew takes — automatically, permanently, in plain language. Not for show. Because a company that can\'t account for itself can\'t scale, and you\'ll want that record the moment something unexpected happens.' },
               { heading: 'You set the rules.\nThe crew works inside them.', body: 'During setup, you tell the Architect how much your crew can spend without asking — on tools, services, whatever the operation needs. Above that limit, nothing moves without your explicit approval.' },
               { heading: 'Your work stays\nyour work.',                     body: 'Your business context — your instructions, your customer data, your decisions — is hardware-isolated every time your crew runs. It doesn\'t get stored where someone else can read it. It doesn\'t get used to train anything. That\'s how the system is built, not a policy you have to trust.' },
             ].map((row, i) => (
@@ -642,7 +642,7 @@ export default function Home() {
           </div>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
             {[
-              { label: 'keelbase.io',      href: 'https://keelbase.io' },
+              { label: 'keelbase.io',      href: 'https://www.keelbase.io' },
               { label: '@keelbase',        href: 'https://twitter.com/keelbase' },
               { label: 'ahoy@keelbase.io', href: 'mailto:ahoy@keelbase.io' },
             ].map(link => (

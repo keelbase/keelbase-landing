@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return {}
-  const url = `https://keelbase.io/blog/${slug}`
-  const image = post.cover || 'https://keelbase.io/og-image.png?v=3'
+  const url = `https://www.keelbase.io/blog/${slug}`
+  const image = post.cover || 'https://www.keelbase.io/og-image.png?v=3'
   return {
     title: `${post.title} — Keelbase Journal`,
     description: post.excerpt || 'An essay from Keelbase.',
@@ -483,7 +483,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
             {/* X / Twitter */}
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${post.title}\n\nNew journal entry from @keelbase`)}&url=${encodeURIComponent(`https://keelbase.io/blog/${post.slug}`)}`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${post.title}\n\nNew journal entry from @keelbase`)}&url=${encodeURIComponent(`https://www.keelbase.io/blog/${post.slug}`)}`}
               target="_blank" rel="noopener noreferrer"
               className="share-btn"
               style={{
@@ -505,7 +505,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
             {/* LinkedIn */}
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://keelbase.io/blog/${post.slug}`)}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://www.keelbase.io/blog/${post.slug}`)}`}
               target="_blank" rel="noopener noreferrer"
               className="share-btn"
               style={{
@@ -567,7 +567,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 transition: 'opacity 0.2s',
               }}
             >
-              {`keelbase.io/blog/${post.slug}/llms.txt`}
+              {`www.keelbase.io/blog/${post.slug}/llms.txt`}
             </a>
           </p>
 
@@ -663,7 +663,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </div>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
             {[
-              { label: 'keelbase.io',      href: 'https://keelbase.io' },
+              { label: 'keelbase.io',      href: 'https://www.keelbase.io' },
               { label: '@keelbase',        href: 'https://twitter.com/keelbase' },
               { label: 'ahoy@keelbase.io', href: 'mailto:ahoy@keelbase.io' },
             ].map(link => (

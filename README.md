@@ -1,6 +1,6 @@
 # Keelbase — Landing Page
 
-Public landing page and waitlist for [keelbase.io](https://keelbase.io).
+Public landing page and waitlist for [keelbase.io](https://www.keelbase.io).
 
 Built with Next.js 14, Tailwind CSS, Resend, and Notion.
 

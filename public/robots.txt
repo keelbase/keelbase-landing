@@ -32,5 +32,5 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-Sitemap: https://keelbase.io/sitemap.xml
-LLMs: https://keelbase.io/llms.txt
+Sitemap: https://www.keelbase.io/sitemap.xml
+LLMs: https://www.keelbase.io/llms.txt

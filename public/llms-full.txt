@@ -1,17 +1,17 @@
 # Keelbase — Journal (Full Content)
 
 > Complete text of all published journal entries. Updated when new entries are published.
-> Index: https://keelbase.io/llms.txt
-> Journal: https://keelbase.io/blog
+> Index: https://www.keelbase.io/llms.txt
+> Journal: https://www.keelbase.io/blog
 
 ---
 
 ## Entry 001 — The company of one is dead. The company of one with a crew is just getting started.
 
-URL: https://keelbase.io/blog/company-of-one-with-a-crew
+URL: https://www.keelbase.io/blog/company-of-one-with-a-crew
 Published: May 11, 2026
 Author: Keelbase
-Per-post reference: https://keelbase.io/blog/company-of-one-with-a-crew/llms.txt
+Per-post reference: https://www.keelbase.io/blog/company-of-one-with-a-crew/llms.txt
 
 There is a kind of business that has always been the dream and the trap at the same time.
 

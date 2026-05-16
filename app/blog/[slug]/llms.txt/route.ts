@@ -1,6 +1,6 @@
 // app/blog/[slug]/llms.txt/route.ts
 // Generates a per-post llms.txt on the fly from Notion.
-// Every post gets https://keelbase.io/blog/[slug]/llms.txt automatically.
+// Every post gets https://www.keelbase.io/blog/[slug]/llms.txt automatically.
 // No manual updates needed when new posts are published.
 
 import { getPostBySlug, getBlocks, NotionBlock } from '@/lib/notion'
@@ -108,7 +108,7 @@ export async function GET(
   const content = [
     `# ${post.title}`,
     '',
-    `> Source: https://keelbase.io/blog/${post.slug}`,
+    `> Source: https://www.keelbase.io/blog/${post.slug}`,
     `> Published: ${formatDate(post.date)}`,
     post.author && post.author !== 'Keelbase' ? `> Author: ${post.author}` : '> Author: Keelbase',
     '',
@@ -119,7 +119,7 @@ export async function GET(
     '',
     '---',
     '',
-    `*From the Keelbase Journal. Full index: https://keelbase.io/llms.txt*`,
+    `*From the Keelbase Journal. Full index: https://www.keelbase.io/llms.txt*`,
   ].filter(line => line !== undefined).join('\n')
 
   return new Response(content, {

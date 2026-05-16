@@ -424,7 +424,7 @@ export default async function BlogIndex() {
           </div>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
             {[
-              { label: 'keelbase.io',      href: 'https://keelbase.io' },
+              { label: 'keelbase.io',      href: 'https://www.keelbase.io' },
               { label: '@keelbase',        href: 'https://twitter.com/keelbase' },
               { label: 'ahoy@keelbase.io', href: 'mailto:ahoy@keelbase.io' },
             ].map(link => (
