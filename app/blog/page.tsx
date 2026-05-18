@@ -88,7 +88,7 @@ function FeaturedCard({ post }: { post: Post }) {
                 color: 'var(--light)', background: 'var(--accent)',
                 padding: '4px 10px',
               }}>
-                First piece
+                Latest piece
               </span>
               <span style={{
                 fontFamily: 'var(--font-display)', fontSize: '0.68rem',
